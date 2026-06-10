@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tansang Thapa Magar — Cybersecurity Portfolio</title>
+<meta name="description" content="Tansang Thapa Magar — cybersecurity specialist. Offensive security, threat detection, security tooling.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Sora:wght@300;400;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -34,8 +35,13 @@ body{
   line-height:1.6;
 }
 ::selection{background:rgba(103,232,249,.25)}
+/* custom scrollbar */
+::-webkit-scrollbar{width:10px}
+::-webkit-scrollbar-track{background:#060A12}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:100px;border:2px solid #060A12}
+::-webkit-scrollbar-thumb:hover{background:rgba(103,232,249,.4)}
 
-/* ============ LIQUID GLASS PRIMITIVES ============ */
+/* ============ LIQUID GLASS PRIMITIVE ============ */
 .glass{
   position:relative;
   background:var(--glass);
@@ -46,19 +52,38 @@ body{
              inset 0 1px 0 rgba(255,255,255,.18),
              inset 0 -1px 0 rgba(255,255,255,.03);
 }
-.glass::before{ /* specular sheen */
+.glass::before{
   content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
   background:linear-gradient(118deg,rgba(255,255,255,.14) 0%,rgba(255,255,255,.04) 22%,transparent 42%);
 }
 
-/* ---------- SVG BACKGROUND LAYERS ---------- */
-.bg-layer{position:fixed;inset:0;z-index:-3;pointer-events:none}
+/* ============ BOOT LOADER ============ */
+#boot{
+  position:fixed;inset:0;z-index:200;display:grid;place-items:center;
+  background:var(--ink);transition:opacity .6s, visibility .6s;
+}
+#boot.done{opacity:0;visibility:hidden}
+.boot-card{
+  width:min(440px, calc(100vw - 48px));border-radius:24px;padding:26px 28px;
+  font-family:'IBM Plex Mono',monospace;font-size:.78rem;
+}
+.boot-card .bt{color:var(--muted);letter-spacing:.12em;font-size:.64rem;margin-bottom:14px;display:flex;justify-content:space-between}
+.boot-card .bt b{color:var(--cyan);font-weight:500}
+#boot-lines{min-height:108px;color:var(--text)}
+#boot-lines div{opacity:0;animation:bline .3s forwards}
+@keyframes bline{to{opacity:1}}
+#boot-lines .ok{color:var(--ok)}
+.boot-bar{height:4px;border-radius:100px;background:rgba(255,255,255,.08);margin-top:16px;overflow:hidden}
+.boot-bar i{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,var(--cyan),var(--violet));transition:width .25s}
+
+/* ============ 3D + SVG BACKGROUND LAYERS ============ */
+#bg3d{position:fixed;inset:0;z-index:-2;pointer-events:none}
+.bg-layer{position:fixed;inset:0;pointer-events:none}
 .bg-layer svg{width:100%;height:100%;display:block}
 #bg-aurora{z-index:-4}
-#bg-grid{z-index:-3;opacity:.5}
-#bg-topo{z-index:-2;opacity:.35}
+#bg-grid{z-index:-3;opacity:.45}
 
-/* ---------- NAV ---------- */
+/* ============ NAV ============ */
 nav{
   position:fixed;top:18px;left:50%;transform:translateX(-50%);
   display:flex;align-items:center;gap:4px;
@@ -73,16 +98,17 @@ nav .brand{
   padding:6px 14px;letter-spacing:.05em;white-space:nowrap;
 }
 nav a{
-  font-family:'IBM Plex Mono',monospace;font-size:.78rem;color:var(--muted);
-  text-decoration:none;padding:8px 16px;border-radius:100px;transition:.25s;
+  font-family:'IBM Plex Mono',monospace;font-size:.76rem;color:var(--muted);
+  text-decoration:none;padding:8px 15px;border-radius:100px;transition:.25s;
 }
-nav a:hover,nav a:focus-visible{
+nav a:hover,nav a:focus-visible,nav a.active{
   color:var(--text);background:rgba(255,255,255,.12);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.25);
 }
+nav a.active{color:var(--cyan)}
 nav a:focus-visible{outline:1px solid var(--cyan)}
 
-/* ---------- HERO ---------- */
+/* ============ HERO ============ */
 .hero{
   min-height:100vh;display:grid;grid-template-columns:.95fr 1.05fr;
   align-items:center;gap:42px;
@@ -120,7 +146,7 @@ h1 .grad{
 .cta-row{display:flex;gap:14px;flex-wrap:wrap}
 .btn{
   font-family:'IBM Plex Mono',monospace;font-size:.85rem;text-decoration:none;
-  padding:14px 27px;border-radius:100px;transition:.25s;display:inline-block;
+  padding:14px 27px;border-radius:100px;transition:.25s;display:inline-block;cursor:pointer;border:0;
 }
 .btn-primary{
   color:#04121a;background:linear-gradient(120deg,var(--cyan),#22D3EE);
@@ -133,38 +159,27 @@ h1 .grad{
   border:1px solid var(--edge-soft);border-top-color:var(--edge);
   backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.2);
+  font-family:'IBM Plex Mono',monospace;font-size:.85rem;
 }
 .btn-ghost:hover{border-color:rgba(103,232,249,.5);transform:translateY(-2px)}
 
-/* ---------- THREAT MAP PANEL ---------- */
-.hero-3d{
-  position:relative;height:580px;border-radius:34px;overflow:hidden;
-  background:rgba(255,255,255,.05);
-  border:1px solid var(--edge-soft);border-top-color:var(--edge);
-  backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
-  box-shadow:0 30px 80px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.18);
+/* globe interaction zone (globe itself is drawn on the fixed canvas behind) */
+.globe-zone{
+  position:relative;height:580px;cursor:grab;
 }
-.hero-3d::before{
-  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:5;
-  background:linear-gradient(118deg,rgba(255,255,255,.1) 0%,transparent 30%);
-}
-#three-canvas{width:100%;height:100%;display:block;cursor:grab}
-#three-canvas:active{cursor:grabbing}
+.globe-zone:active{cursor:grabbing}
 .hud{
   position:absolute;font-family:'IBM Plex Mono',monospace;font-size:.66rem;
   color:var(--muted);letter-spacing:.06em;pointer-events:none;z-index:6;
 }
-.hud.tl{top:18px;left:20px;display:flex;align-items:center;gap:8px}
+.hud.tl{top:8px;left:4px;display:flex;align-items:center;gap:8px}
 .hud.tl .dot{width:7px;height:7px;border-radius:50%;background:var(--danger);animation:pulse 1.4s infinite}
 @keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(251,113,133,.5)}50%{opacity:.6;box-shadow:0 0 0 6px rgba(251,113,133,0)}}
-.hud.tr{top:18px;right:20px;color:var(--cyan)}
-.hud.br{bottom:18px;right:20px}
-.hud .ok{color:var(--ok)}
-
-/* live threat log */
+.hud.tr{top:8px;right:4px;color:var(--cyan)}
+.hud.br{bottom:8px;right:4px}
 .threat-log{
-  position:absolute;left:16px;bottom:16px;z-index:6;
-  width:min(330px,calc(100% - 32px));
+  position:absolute;left:0;bottom:0;z-index:6;
+  width:min(330px,100%);
   border-radius:20px;padding:13px 15px;
   background:rgba(10,16,28,.42);
   backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);
@@ -188,8 +203,8 @@ h1 .grad{
 .tl-entry .typ{color:var(--cyan);min-width:86px}
 .tl-entry .route{color:var(--muted)}
 
-/* ---------- SECTIONS ---------- */
-section{max-width:1280px;margin:0 auto;padding:110px 32px}
+/* ============ SECTIONS ============ */
+section{max-width:1280px;margin:0 auto;padding:110px 32px;position:relative}
 .sec-head{margin-bottom:54px}
 .sec-head .tag{
   font-family:'IBM Plex Mono',monospace;font-size:.78rem;color:var(--violet);
@@ -197,10 +212,42 @@ section{max-width:1280px;margin:0 auto;padding:110px 32px}
 }
 .sec-head h2{
   font-family:'Unbounded',sans-serif;font-weight:600;
-  font-size:clamp(1.6rem,3vw,2.4rem);margin-top:10px;
+  font-size:clamp(1.6rem,3vw,2.4rem);margin-top:10px;min-height:1.2em;
 }
 
-/* ---------- SKILLS ---------- */
+/* ============ ABOUT ============ */
+.about-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:stretch}
+.terminal{
+  border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;
+}
+.term-bar{
+  display:flex;align-items:center;gap:8px;padding:13px 16px;
+  background:rgba(255,255,255,.05);border-bottom:1px solid var(--edge-soft);
+  font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--muted);
+}
+.term-bar .d{width:11px;height:11px;border-radius:50%}
+.term-bar .d:nth-child(1){background:#FB7185}.term-bar .d:nth-child(2){background:#FBBF24}.term-bar .d:nth-child(3){background:#34D399}
+.term-bar span{margin-left:8px;letter-spacing:.06em}
+.term-body{
+  padding:22px 22px 26px;font-family:'IBM Plex Mono',monospace;font-size:.8rem;
+  line-height:1.85;flex:1;min-height:280px;
+}
+.term-body .p{color:var(--cyan)}
+.term-body .c{color:var(--muted)}
+.term-body .o{color:var(--text)}
+.term-body .k{color:var(--signal)}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.stat{
+  border-radius:var(--radius);padding:24px;display:flex;flex-direction:column;justify-content:center;
+}
+.stat .num{
+  font-family:'Unbounded',sans-serif;font-weight:600;font-size:clamp(1.6rem,2.6vw,2.2rem);
+  background:linear-gradient(100deg,var(--cyan),var(--violet));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.stat .lbl{font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--muted);letter-spacing:.08em;margin-top:6px}
+
+/* ============ SKILLS ============ */
 .skills-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
 .skill-card{
   border-radius:var(--radius);padding:26px 24px;
@@ -224,14 +271,14 @@ section{max-width:1280px;margin:0 auto;padding:110px 32px}
 }
 .skill-card:hover .chips span{color:var(--text)}
 
-/* ---------- PROJECTS ---------- */
+/* ============ PROJECTS ============ */
 .proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;perspective:1200px}
 .proj-card{
   border-radius:var(--radius);padding:28px 26px;
   transform-style:preserve-3d;transition:border-color .3s;will-change:transform;
   display:flex;flex-direction:column;gap:14px;
 }
-.proj-card::after{ /* cursor glare */
+.proj-card::after{
   content:"";position:absolute;inset:0;border-radius:var(--radius);
   background:radial-gradient(440px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.1),transparent 45%);
   opacity:0;transition:opacity .3s;pointer-events:none;
@@ -263,57 +310,120 @@ section{max-width:1280px;margin:0 auto;padding:110px 32px}
 .proj-link:hover{color:var(--cyan)}
 .proj-link:hover svg{transform:translate(3px,-3px)}
 
-/* ---------- FOOTER ---------- */
+/* ============ EXPERIENCE / TIMELINE ============ */
+.timeline{position:relative;max-width:780px;margin:0 auto}
+.timeline::before{
+  content:"";position:absolute;left:19px;top:6px;bottom:6px;width:1px;
+  background:linear-gradient(180deg,var(--cyan),var(--violet),transparent);opacity:.45;
+}
+.tl-item{position:relative;padding:0 0 38px 64px}
+.tl-item:last-child{padding-bottom:0}
+.tl-node{
+  position:absolute;left:8px;top:4px;width:23px;height:23px;border-radius:50%;
+  background:rgba(255,255,255,.07);border:1px solid var(--edge);
+  backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.3), 0 0 18px rgba(103,232,249,.25);
+  display:grid;place-items:center;
+}
+.tl-node::after{content:"";width:7px;height:7px;border-radius:50%;background:var(--cyan)}
+.tl-item:nth-child(2) .tl-node::after{background:var(--violet)}
+.tl-item:nth-child(3) .tl-node::after{background:var(--signal)}
+.tl-item:nth-child(4) .tl-node::after{background:var(--ok)}
+.tl-card{border-radius:22px;padding:22px 24px}
+.tl-card .when{font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--signal);letter-spacing:.08em}
+.tl-card h3{font-family:'Unbounded',sans-serif;font-weight:400;font-size:1rem;margin:7px 0 5px}
+.tl-card .where{font-family:'IBM Plex Mono',monospace;font-size:.72rem;color:var(--cyan);margin-bottom:8px}
+.tl-card p{color:var(--muted);font-size:.86rem}
+
+/* ============ FOOTER ============ */
 footer{max-width:1280px;margin:0 auto 60px;padding:0 32px}
 .foot-card{
-  border-radius:34px;padding:54px 40px;text-align:center;
+  border-radius:34px;padding:56px 40px;text-align:center;
   background:linear-gradient(160deg,rgba(103,232,249,.08),rgba(129,140,248,.1));
 }
 .foot-card h2{font-family:'Unbounded',sans-serif;font-weight:600;font-size:clamp(1.4rem,2.6vw,2rem);margin-bottom:12px}
 .foot-card p{color:var(--muted);margin-bottom:26px}
 .socials{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;position:relative;z-index:1}
-.socials a{
+.socials a,.socials button{
   font-family:'IBM Plex Mono',monospace;font-size:.8rem;color:var(--text);
-  text-decoration:none;padding:12px 22px;border-radius:100px;
+  text-decoration:none;padding:12px 22px;border-radius:100px;cursor:pointer;
   background:var(--glass);border:1px solid var(--edge-soft);border-top-color:var(--edge);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.2);transition:.25s;
   backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
 }
-.socials a:hover{border-color:rgba(103,232,249,.5);transform:translateY(-2px);color:var(--cyan)}
+.socials a:hover,.socials button:hover{border-color:rgba(103,232,249,.5);transform:translateY(-2px);color:var(--cyan)}
 .copy{
   text-align:center;font-family:'IBM Plex Mono',monospace;font-size:.7rem;
   color:var(--muted);margin-top:34px;letter-spacing:.05em;
 }
 
-/* reveal on scroll */
+/* reveal */
 .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease, transform .7s ease}
 .reveal.in{opacity:1;transform:none}
 
 @media (prefers-reduced-motion: reduce){
   *{animation:none!important;transition:none!important;scroll-behavior:auto}
   .reveal{opacity:1;transform:none}
+  #boot{display:none}
 }
 @media (max-width:1020px){
-  .hero{grid-template-columns:1fr;padding-top:130px}
-  .hero-3d{height:440px}
+  .hero{grid-template-columns:1fr;padding-top:130px;gap:10px}
+  .globe-zone{height:430px}
+  .about-grid{grid-template-columns:1fr}
   .skills-grid{grid-template-columns:repeat(2,1fr)}
   .proj-grid{grid-template-columns:repeat(2,1fr)}
 }
 @media (max-width:640px){
-  nav{gap:0;padding:6px}
-  nav a{padding:7px 10px;font-size:.7rem}
+  nav{
+    gap:4px;
+    padding:8px 10px;
+    max-width:calc(100vw - 16px);
+    width:calc(100vw - 16px);
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+  nav a{padding:6px 8px;font-size:.66rem}
   nav .brand{display:none}
+  .hero{min-height:auto;padding-top:108px;padding-left:18px;padding-right:18px;gap:24px}
+  .hero h1{font-size:clamp(1.8rem,9vw,2.5rem)}
+  .hero p.sub{font-size:.95rem;max-width:none}
+  .cta-row{flex-direction:column;align-items:flex-start}
+  .btn{width:100%;text-align:center}
   .skills-grid,.proj-grid{grid-template-columns:1fr}
-  section{padding:80px 22px}
-  .hero{padding-left:22px;padding-right:22px}
-  .hero-3d{height:400px}
-  .threat-log{width:calc(100% - 32px)}
+  section{padding:72px 18px}
+  .globe-zone{height:320px}
+  .hud{font-size:.58rem}
+  .threat-log{padding:11px 12px}
+  .threat-log{width:100%}
+  .stats{grid-template-columns:1fr}
+  .stat{padding:20px}
+  footer{padding:0 18px;margin-bottom:44px}
+  .foot-card{padding:24px 18px}
+  .socials{gap:8px}
+  .socials a,.socials button{width:100%;text-align:center}
+}
+@media (max-width:420px){
+  .hero{padding-top:98px}
+  .hero .roles{gap:6px}
+  .hero .roles span{width:100%}
+  .globe-zone{height:280px}
+  .threat-log .tl-head{flex-direction:column;align-items:flex-start;gap:4px}
+  .tl-entry .typ{min-width:72px}
 }
 </style>
 </head>
 <body>
 
-<!-- ============ SVG BACKGROUND: aurora gradient mesh ============ -->
+<!-- ============ BOOT LOADER ============ -->
+<div id="boot" aria-hidden="true">
+  <div class="boot-card glass">
+    <div class="bt"><span>TTM://SECURE_SHELL</span><b>v2.6.0</b></div>
+    <div id="boot-lines"></div>
+    <div class="boot-bar"><i id="boot-bar"></i></div>
+  </div>
+</div>
+
+<!-- ============ SVG BACKGROUND: aurora ============ -->
 <div class="bg-layer" id="bg-aurora" aria-hidden="true">
 <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
   <defs>
@@ -346,7 +456,7 @@ footer{max-width:1280px;margin:0 auto 60px;padding:0 32px}
 </svg>
 </div>
 
-<!-- ============ SVG BACKGROUND: hex security grid (parallax) ============ -->
+<!-- ============ SVG BACKGROUND: hex grid (parallax) ============ -->
 <div class="bg-layer" id="bg-grid" aria-hidden="true">
 <svg width="100%" height="100%">
   <defs>
@@ -364,28 +474,22 @@ footer{max-width:1280px;margin:0 auto 60px;padding:0 32px}
 </svg>
 </div>
 
-<!-- ============ SVG BACKGROUND: signal waves (parallax) ============ -->
-<div class="bg-layer" id="bg-topo" aria-hidden="true">
-<svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
-  <g fill="none" stroke-width="1">
-    <path d="M-50 700 Q 360 620 720 700 T 1490 700" stroke="rgba(103,232,249,0.10)"/>
-    <path d="M-50 740 Q 360 660 720 740 T 1490 740" stroke="rgba(103,232,249,0.07)"/>
-    <path d="M-50 780 Q 360 700 720 780 T 1490 780" stroke="rgba(129,140,248,0.08)"/>
-    <path d="M-50 820 Q 360 740 720 820 T 1490 820" stroke="rgba(129,140,248,0.05)"/>
-  </g>
-</svg>
-</div>
+<!-- ============ FULL-PAGE 3D CANVAS ============ -->
+<canvas id="bg3d" aria-hidden="true"></canvas>
 
 <!-- ============ NAV ============ -->
 <nav>
   <span class="brand">~/tansang</span>
+  <a href="#top" class="active">home</a>
+  <a href="#about">about</a>
   <a href="#skills">skills</a>
   <a href="#projects">projects</a>
+  <a href="#experience">experience</a>
   <a href="#contact">contact</a>
 </nav>
 
 <!-- ============ HERO ============ -->
-<header class="hero">
+<header class="hero" id="top">
   <div>
     <div class="eyebrow">$ whoami<span class="cursor"></span></div>
     <h1>Tansang Thapa Magar<br><span class="grad">securing the digital frontier.</span></h1>
@@ -401,8 +505,7 @@ footer{max-width:1280px;margin:0 auto 60px;padding:0 32px}
     </div>
   </div>
 
-  <div class="hero-3d" id="globe-wrap">
-    <canvas id="three-canvas"></canvas>
+  <div class="globe-zone" id="globe-zone">
     <span class="hud tl"><span class="dot"></span>GLOBAL THREAT MAP // SIMULATED FEED</span>
     <span class="hud tr">⬡ ATTACKS: <span id="atk-count">0</span></span>
     <span class="hud br">drag to rotate</span>
@@ -413,11 +516,31 @@ footer{max-width:1280px;margin:0 auto 60px;padding:0 32px}
   </div>
 </header>
 
+<!-- ============ ABOUT ============ -->
+<section id="about">
+  <div class="sec-head reveal">
+    <span class="tag">[01] identity</span>
+    <h2 data-decrypt>About Me</h2>
+  </div>
+  <div class="about-grid">
+    <div class="terminal glass reveal">
+      <div class="term-bar"><i class="d"></i><i class="d"></i><i class="d"></i><span>tansang@kali: ~/about</span></div>
+      <div class="term-body" id="term-body"></div>
+    </div>
+    <div class="stats">
+      <div class="stat glass reveal"><span class="num" data-count="120" data-suffix="+">0</span><span class="lbl">MACHINES_ROOTED</span></div>
+      <div class="stat glass reveal"><span class="num" data-count="15" data-suffix="+">0</span><span class="lbl">CTFS_PLAYED</span></div>
+      <div class="stat glass reveal"><span class="num" data-count="6" data-suffix="">0</span><span class="lbl">TOOLS_BUILT</span></div>
+      <div class="stat glass reveal"><span class="num" data-count="24" data-suffix="/7">0</span><span class="lbl">CURIOSITY_UPTIME</span></div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ SKILLS ============ -->
 <section id="skills">
   <div class="sec-head reveal">
-    <span class="tag">[01] capabilities</span>
-    <h2>Skills &amp; Arsenal</h2>
+    <span class="tag">[02] capabilities</span>
+    <h2 data-decrypt>Skills &amp; Arsenal</h2>
   </div>
   <div class="skills-grid">
     <div class="skill-card glass reveal" data-tilt>
@@ -446,8 +569,8 @@ footer{max-width:1280px;margin:0 auto 60px;padding:0 32px}
 <!-- ============ PROJECTS ============ -->
 <section id="projects">
   <div class="sec-head reveal">
-    <span class="tag">[02] selected work</span>
-    <h2>Projects</h2>
+    <span class="tag">[03] selected work</span>
+    <h2 data-decrypt>Projects</h2>
   </div>
   <div class="proj-grid">
 
@@ -520,49 +643,130 @@ footer{max-width:1280px;margin:0 auto 60px;padding:0 32px}
   </div>
 </section>
 
+<!-- ============ EXPERIENCE ============ -->
+<section id="experience">
+  <div class="sec-head reveal">
+    <span class="tag">[04] track record</span>
+    <h2 data-decrypt>Experience &amp; Training</h2>
+  </div>
+  <div class="timeline">
+    <div class="tl-item reveal">
+      <div class="tl-node"></div>
+      <div class="tl-card glass">
+        <span class="when">2025 — PRESENT</span>
+        <h3>Independent Security Researcher</h3>
+        <div class="where">self-directed · kathmandu</div>
+        <p>Building open-source security tooling, hunting on VDPs, and documenting findings. Running a segmented home lab for malware analysis and detection engineering.</p>
+      </div>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-node"></div>
+      <div class="tl-card glass">
+        <span class="when">2024 — PRESENT</span>
+        <h3>CTF Player &amp; Lab Practitioner</h3>
+        <div class="where">hackthebox</div>
+        <p>120+ machines rooted across offensive paths: web exploitation, privilege escalation, Active Directory. Regular CTF competitor in jeopardy and boot2root formats.</p>
+      </div>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-node"></div>
+      <div class="tl-card glass">
+        <span class="when">2024</span>
+        <h3>Certifications in Progress</h3>
+        <div class="where">comptia security+ · ejpt (target)</div>
+        <p>Working through structured certification paths covering network security, threat management, and hands-on penetration testing methodology.</p>
+      </div>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-node"></div>
+      <div class="tl-card glass">
+        <span class="when">2025 — PRESENT</span>
+        <h3>BSc (Hons) Cybersecurity</h3>
+        <div class="where">University of Wolverhampton</div>
+        <p>Core coursework in networking, operating systems, and cryptography — applied directly to security research and tooling projects.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ CONTACT / FOOTER ============ -->
 <footer id="contact">
   <div class="foot-card glass reveal">
-    <h2>Let's Connect</h2>
-    <p>Open to new opportunities and collaborations. Feel free to reach out.</p>
+    <h2>Let's secure something together.</h2>
+    <p>Open to internships, freelance security assessments, and CTF teams.</p>
     <div class="socials">
-      <a href="mailto:tansangthapa@gmail.com">tansangthapa@gmail.com</a>
+      <button id="copy-mail" type="button">copy email</button>
+      <a href="mailto:tansangthapa@gmail.com">email</a>
+      <a href="https://github.com/SenpaiNeedsHelp" target="_blank" rel="noopener">github</a>
+      <a href="https://www.linkedin.com/in/tansang-magar/" target="_blank" rel="noopener">linkedin</a>
     </div>
   </div>
-  <div class="copy reveal">
-  </div>
+  <p class="copy">© 2026 Tansang Thapa Magar — built with caffeine &amp; curiosity. no trackers, obviously.</p>
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const EMAIL = "tansangthapa@gmail.com";
 
 /* ================================================================
-   3D GLOBE THREAT MAP — simulated live feed
-   Continents are real: a land bitmask (1.5° grid, lat -60..75)
-   generated from world land data and embedded below as base64.
+   BOOT SEQUENCE
    ================================================================ */
 (function(){
-  const wrap = document.getElementById('globe-wrap');
-  const canvas = document.getElementById('three-canvas');
+  const boot = document.getElementById('boot');
+  if(reduced){ boot.remove(); return; }
+  const lines = [
+    ["init secure_shell --user tansang", 0],
+    ["loading threat_intel.db .......... <span class='ok'>OK</span>", 280],
+    ["mounting /portfolio .............. <span class='ok'>OK</span>", 560],
+    ["spinning up globe_renderer ....... <span class='ok'>OK</span>", 840],
+    ["<span class='ok'>ACCESS GRANTED</span> — welcome.", 1150]
+  ];
+  const box = document.getElementById('boot-lines');
+  const bar = document.getElementById('boot-bar');
+  lines.forEach(([t,d],i)=>setTimeout(()=>{
+    const div = document.createElement('div');
+    div.innerHTML = "<span style='color:#67E8F9'>$</span> " + t;
+    box.appendChild(div);
+    bar.style.width = ((i+1)/lines.length*100) + "%";
+  }, d));
+  setTimeout(()=>boot.classList.add('done'), 1700);
+  setTimeout(()=>boot.remove(), 2400);
+})();
+
+/* ================================================================
+   FULL-PAGE 3D BACKGROUND
+   Hero: threat-map globe (real continents from embedded land
+   bitmask, 1.5° grid). On scroll the globe sinks away and a
+   particle starfield carries the rest of the page.
+   ================================================================ */
+(function(){
+  const canvas = document.getElementById('bg3d');
+  const zone = document.getElementById('globe-zone');
   const renderer = new THREE.WebGLRenderer({canvas, alpha:true, antialias:true});
   renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(45, 1, .1, 100);
-  camera.position.z = 7.6;
+  const camera = new THREE.PerspectiveCamera(45, innerWidth/innerHeight, .1, 200);
+  camera.position.z = 9;
 
-  function size(){
-    const r = wrap.getBoundingClientRect();
-    renderer.setSize(r.width, r.height, false);
-    camera.aspect = r.width / r.height;
-    camera.updateProjectionMatrix();
-  }
-  size(); window.addEventListener('resize', size);
-
-  const R = 2.55;
+  const R = 2.35;
   const globe = new THREE.Group();
   globe.rotation.x = .35;
   scene.add(globe);
+  const halo = new THREE.Group();
+  scene.add(halo);
+
+  /* layout: park the globe over the hero's right column */
+  let baseX = 0, baseY = 0, baseScale = 1;
+  function layout(){
+    renderer.setSize(innerWidth, innerHeight, false);
+    camera.aspect = innerWidth/innerHeight;
+    camera.updateProjectionMatrix();
+    const halfW = Math.tan(camera.fov*Math.PI/360) * camera.position.z * camera.aspect;
+    if(innerWidth > 1020){ baseX = halfW*.48; baseY = -.1; baseScale = 1; }
+    else { baseX = 0; baseY = .55; baseScale = .8; }
+  }
+  layout(); window.addEventListener('resize', layout);
 
   const latLon = (lat, lon, r=R) => {
     const phi = (90 - lat) * Math.PI/180, theta = (lon + 180) * Math.PI/180;
@@ -573,13 +777,13 @@ const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     );
   };
 
-  /* ---- occluder sphere (hides back-side dots, glassy tint) ---- */
+  /* occluder sphere */
   globe.add(new THREE.Mesh(
-    new THREE.SphereGeometry(R - .035, 48, 48),
+    new THREE.SphereGeometry(R - .032, 48, 48),
     new THREE.MeshBasicMaterial({color:0x0A1322, transparent:true, opacity:.92})
   ));
 
-  /* ---- atmosphere halo (procedural sprite, no external assets) ---- */
+  /* atmosphere halo sprite (procedural) */
   (function(){
     const c = document.createElement('canvas'); c.width = c.height = 256;
     const g = c.getContext('2d');
@@ -593,20 +797,20 @@ const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       map:new THREE.CanvasTexture(c), transparent:true, depthWrite:false
     }));
     sprite.scale.set(R*2.85, R*2.85, 1);
-    scene.add(sprite);
+    halo.add(sprite);
   })();
 
-  /* ---- continents from embedded land bitmask ---- */
-  const LAND_B64 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD4AAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAD+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD8AAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAA+AAAAAAAAAAAAAAAAAAAAAAAAADgAAAAAAAAAAAA+AAAAAAAAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAA+AAAAAAAAAAAAAAAAAAAAAAAYAAYAAAAAAAAAAAB/gAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAA/wAAAAAAAAAAAAAAAAAAAAAAAAAGAAAAAAAAAAAB/8AAAAAAAAAAAAAAAAAAAAAD8AAEAAAAAAAAAAAA/8AAAAAAAAAAAAAAAAAAAAAH+AAIAAAAAAAAAAAA//gAAAAAAAQAAAAAAAAAAwAH+AAAAAAAAAAAAAAAf/gAAAAAAA/gAAAAAAAAA+A//AAAAAAAAAAAAAAAf/wAAAAAAAfwAAAAAAAAA////AAAAAAAAAAAAAAAf/4AAAAAAA/4AAAAAAAAB////gAAAAAAAAAAAAAAf/8AAAAAAB/8AAAAAAAAB////gAAAAAAAAAAAAAAf/8AAAAAAB/8AAAAAAAAD////gAAAAAAAAAAAAAAf/8AAAAAAD/8AAAAAAAAD////gAAAAAAAAAAAAAAf//AAAAAAD//AwAAAAAAD///+AAAAAAAAAAAAAAAP//4AAAAAD//BwAAAAAAD///+AAAAAAAAAAAAAAAP//4AAAAAD//A4QAAAAAA///8AIAAAAAAAAAAAAAP//8AAAAAH//A4AAAAAAAH//4AAAAAAAAAAAAAAAf//8AAAAAP//g4AAAAAAAD//wAABgAAAAAAAAAAA///8AAAAAP//48AAAAAAAB/1gAAAAAAAAAAAAAAD///8AAAAAH//8MAAAAAAAA/hgAAABAAAAAAAAAAD///+AAAAAH//8EAAAAAAAAHhAAAAAAAAAAAAAAAH///+AAAAAD//8AAAAAAAAABRAAAAAAAAAAAAAAAH////AAAAAD//8AAAAAAAAAAAAAgAAAAAAAAAAAAP////gAAAAH//4AAAAAAAAggDMAAAAAAAAAAAAAAf////gAAAAH//4AAAAAAA8AAH4AAAAAAAAAAAAAA/////gAAAAH//wAAAAAAAAAAH6AAAAAAAAAAAAAA////+AAAAAP//4AAAAAAGAOAfggAAAAAAAAAAAAAf///8AAAAAf//4AAAAAAPvMJeBAAAAAAAAAAAAAAf///AAAAAAf//8AAAAAAsPOTAAAAAAAAAAAAAABAf//0AAAAAAf//+AAAAAAcfoAAAAAAAAAAAAAAAAAP//4AAAAAAf///AAAAAA0fgAAAAAAAAAAAAAAAAAH//4AAAAAAf///wAAAABoHgAAAAAAAAAAAAAAAAAH//wAAAAQD////wAAAADIDwAAAAAAAAAAAAAAAAAH/8AAAAA/j////4AAAAAYAgAAAAAAAAAAAAAAAAAP/4AAAAD//////8AAAgAAADgAAAAAAAAAAAAAAABb/wAAAAD//////8AACAAiAAgAAAAAAAAAAAAAAAGD8gAAAAH//////eAAHAAjACAAAAAAAAAAAAAAAAGAgAAAAAP/////+AAAHAIngIAAAAAAAAAAAAAAAAeAAAAAAAf//////wAAPAI/gAAAAAAAAAAAAAAAAB+AAAAAAAf/////98AAPAA/gEAAAAAAAAAAAAAAAfwAAAAAAAP/////z/wAfwH+AEAAAAAAAAAAAAAAPwwAwAAAAAP/////j/4Af4H+QAAAAAAAAAAAAAAAPw4NAAAAAAf/////n/8Bf8P/AAAAAAAAAAAAAAAAPgCwAAAAAAP/////n/8B////8AAAAAAAAAAAAAAAfgAAAAAAAAP/////P/4H/////kAAAAAAAAAAAAAA/wAgAAAAAAH/////f+D//////wAAAAAAAAAAAAAN/wAgAAAAAAD////+/8///////4AAAAAAAAAAAAAL/wBgAAAAAAB////9/5///////8AAAAAAAAAAAAAX//lAAAAAAAA//////7///////8AAAAAAAAAAAAAX///AAAAAAAA//+PB/////////4EAAAAAAAAAAAA////gAAAAAAAf/wAA/////////4EAAAAAAAAAAAD////4AAAAAAAP/gAA/////////wDQAAAAAAAAAAH////4AAAAAAAAfwAA/////////4YcAAAAAAAAAAH////8AAAAAAAfAGEf/////////wYGAAAAAAAAAAP////4AAAAAAA/QhE//////////kwCAAAAAAAAAAP////+AAAAAAAfgj9P/////////74CAAAAAAAAAAP/////gAAAAAAf4sfgD/////////4AAAAAAAAAAAP/////wAAAAAAZ+d/wH//////////hgAAAAAAAAAP/////9gAAAAAA/7/xf//////////xAAAAAAAAAAP/////+AAAAAAB///7P//////////4AAAAAAAAAAf/////9HgAAAAH///////////////9AAAAAAAAAAv/////8iAAAAABf//////////////9gAAAAAAAAB///////4AAAAAHv//////////////9AAAAAAAAAD/////P/+AAAAAzz///////////////AEAAAAAAAP/////P/8AAAAAxA//////////////0AOAAAAwAAX////4H/wAAAAAGA8H////////////gAPAAAAFAA/////gH/wAAAAAWAmH////////////4AHgAAALAB////8AP5AAAAAAEDPH////////////+ABwAAF/4L////4AHwAAAAAAAD/gH/////////////g8AAD///////8AHgADwAAAAD/H//////////////5vwAB////////AAeAH4AAAAB/n/////////////////DCf///////3O+AP8AD4AAP5/f//////////////+/n////////6B9gf/gA4AAH//D///////////////8B//////f33E/Af/wAAAAD//8v//v///////////AB//+//Hv7DH8AP//gAAAB//gEB7j/////////+/AAPgAAAD8Of/4A//+AAAAACIAAIHv////////+AAAAAAAAd/Ywf+AA///4AAAAAAABgDtP////4D8AAAAAAAAAPwZnJYAB///2AAAAAAAAYAA///PxgDAAAAAAAAAAADwt/gAD///+AAAAAAAAOAAB//8AAPGAAA";
+  /* continents */
+  const LAND_B64 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD4AAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAD+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD8AAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAA+AAAAAAAAAAAAAAAAAAAAAAAAADgAAAAAAAAAAAA+AAAAAAAAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAA+AAAAAAAAAAAAAAAAAAAAAAAYAAYAAAAAAAAAAAB/gAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAA/wAAAAAAAAAAAAAAAAAAAAAAAAAGAAAAAAAAAAAB/8AAAAAAAAAAAAAAAAAAAAAD8AAEAAAAAAAAAAAA/8AAAAAAAAAAAAAAAAAAAAAH+AAIAAAAAAAAAAAA//gAAAAAAAQAAAAAAAAAAwAH+AAAAAAAAAAAAAAAf/gAAAAAAA/gAAAAAAAAA+A//AAAAAAAAAAAAAAAf/wAAAAAAAfwAAAAAAAAA////AAAAAAAAAAAAAAAf/4AAAAAAA/4AAAAAAAAB////gAAAAAAAAAAAAAAf/8AAAAAAB/8AAAAAAAAB////gAAAAAAAAAAAAAAf/8AAAAAAB/8AAAAAAAAD////gAAAAAAAAAAAAAAf/8AAAAAAD/8AAAAAAAAD////gAAAAAAAAAAAAAAf//AAAAAAD//AwAAAAAAD///+AAAAAAAAAAAAAAAP//4AAAAAD//BwAAAAAAD///+AAAAAAAAAAAAAAAP//4AAAAAD//A4QAAAAAA///8AIAAAAAAAAAAAAAP//8AAAAAH//A4AAAAAAAH//4AAAAAAAAAAAAAAAf//8AAAAAP//g4AAAAAAAD//wAABgAAAAAAAAAAA///8AAAAAP//48AAAAAAAB/1gAAAAAAAAAAAAAAD///8AAAAAH//8MAAAAAAAA/hgAAABAAAAAAAAAAD///+AAAAAH//8EAAAAAAAAHhAAAAAAAAAAAAAAAH///+AAAAAD//8AAAAAAAAABRAAAAAAAAAAAAAAAH////AAAAAD//8AAAAAAAAAAAAAgAAAAAAAAAAAAP////gAAAAH//4AAAAAAAAggDMAAAAAAAAAAAAAAf////gAAAAH//4AAAAAAA8AAH4AAAAAAAAAAAAAA/////gAAAAH//wAAAAAAAAAAH6AAAAAAAAAAAAAA////+AAAAAP//4AAAAAAGAOAfggAAAAAAAAAAAAAf///8AAAAAf//4AAAAAAPvMJeBAAAAAAAAAAAAAAf///AAAAAAf//8AAAAAAsPOTAAAAAAAAAAAAAABAf//0AAAAAAf//+AAAAAAcfoAAAAAAAAAAAAAAAAAP//4AAAAAAf///AAAAAA0fgAAAAAAAAAAAAAAAAAH//4AAAAAAf///wAAAABoHgAAAAAAAAAAAAAAAAAH//wAAAAQD////wAAAADIDwAAAAAAAAAAAAAAAAAH/8AAAAA/j////4AAAAAYAgAAAAAAAAAAAAAAAAAP/4AAAAD//////8AAAgAAADgAAAAAAAAAAAAAAABb/wAAAAD//////8AACAAiAAgAAAAAAAAAAAAAAAGD8gAAAAH//////eAAHAAjACAAAAAAAAAAAAAAAAGAgAAAAAP/////+AAAHAIngIAAAAAAAAAAAAAAAAeAAAAAAAf//////wAAPAI/gAAAAAAAAAAAAAAAAB+AAAAAAAf/////98AAPAA/gEAAAAAAAAAAAAAAAfwAAAAAAAP/////5/AAfgH/AEAAAAAAAAAAAAAAD/wECAAAAAP/////z/wAfwH+AEAAAAAAAAAAAAAAPwwAwAAAAAP/////j/4Af4H+QAAAAAAAAAAAAAAAPw4NAAAAAAf/////n/8Bf8P/AAAAAAAAAAAAAAAAPgCwAAAAAAP/////n/8B////8AAAAAAAAAAAAAAAfgAAAAAAAAP/////P/4H/////kAAAAAAAAAAAAAA/wAgAAAAAAH/////f+D//////wAAAAAAAAAAAAAN/wAgAAAAAAD////+/8///////4AAAAAAAAAAAAAL/wBgAAAAAAB////9/5///////8AAAAAAAAAAAAAX//lAAAAAAAA//////7///////8AAAAAAAAAAAAAX///AAAAAAAA//+PB/////////4EAAAAAAAAAAAA////gAAAAAAAf/wAA/////////4EAAAAAAAAAAAD////4AAAAAAAP/gAA/////////wDQAAAAAAAAAAH////4AAAAAAAAfwAA/////////4YcAAAAAAAAAAH////8AAAAAAAfAGEf/////////wYGAAAAAAAAAAP////4AAAAAAA/QhE//////////kwCAAAAAAAAAAP////+AAAAAAAfgj9P/////////74CAAAAAAAAAAP/////gAAAAAAf4sfgD/////////4AAAAAAAAAAAP/////wAAAAAAZ+d/wH//////////hgAAAAAAAAAP/////9gAAAAAA/7/xf//////////xAAAAAAAAAAP/////+AAAAAAB///7P//////////4AAAAAAAAAAf/////9HgAAAAH///////////////9AAAAAAAAAAv/////8iAAAAABf//////////////9gAAAAAAAAB///////4AAAAAHv//////////////9AAAAAAAAAD/////P/+AAAAAzz///////////////AEAAAAAAAP/////P/8AAAAAxA//////////////0AOAAAAwAAX////4H/wAAAAAGA8H////////////gAPAAAAFAA/////gH/wAAAAAWAmH////////////4AHgAAALAB////8AP5AAAAAAEDPH////////////+ABwAAF/4L////4AHwAAAAAAAD/gH/////////////g8AAD///////8AHgADwAAAAD/H//////////////5vwAB////////AAeAH4AAAAB/n/////////////////DCf///////3O+AP8AD4AAP5/f//////////////+/n////////6B9gf/gA4AAH//D///////////////8B//////f33E/Af/wAAAAD//8v//v///////////AB//+//Hv7DH8AP//gAAAB//gEB7j/////////+/AAPgAAAD8Of/4A//+AAAAACIAAIHv////////+AAAAAAAAd/Ywf+AA///4AAAAAAABgDtP////4D8AAAAAAAAAPwZnJYAB///2AAAAAAAAYAA///PxgDAAAAAAAAAAADwt/gAD///+AAAAAAAAOAAB//8AAPGAAA";
   const ROWS = 91, COLS = 240, LAT0 = -60, LON0 = -180, STEP = 1.5;
   (function(){
     const bin = atob(LAND_B64);
     const pts = [];
     for(let r=0; r<ROWS; r++){
-      for(let cIdx=0; cIdx<COLS; cIdx++){
-        const i = r*COLS + cIdx;
+      for(let cI=0; cI<COLS; cI++){
+        const i = r*COLS + cI;
         if((bin.charCodeAt(i>>3) >> (7-(i&7))) & 1){
-          const v = latLon(LAT0 + r*STEP, LON0 + cIdx*STEP);
+          const v = latLon(LAT0 + r*STEP, LON0 + cI*STEP);
           pts.push(v.x, v.y, v.z);
         }
       }
@@ -614,11 +818,11 @@ const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const geo = new THREE.BufferGeometry();
     geo.setAttribute('position', new THREE.Float32BufferAttribute(pts, 3));
     globe.add(new THREE.Points(geo, new THREE.PointsMaterial({
-      color:0x86C8E8, size:.032, transparent:true, opacity:.9, depthWrite:false
+      color:0x86C8E8, size:.03, transparent:true, opacity:.9, depthWrite:false
     })));
   })();
 
-  /* ---- graticule ring accents ---- */
+  /* graticule rings */
   [0, 30, -30].forEach(lat=>{
     const r2 = R * Math.cos(lat*Math.PI/180), y = R * Math.sin(lat*Math.PI/180);
     const seg = [];
@@ -631,7 +835,21 @@ const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     globe.add(new THREE.Line(g, new THREE.LineBasicMaterial({color:0x3B5C7A, transparent:true, opacity:.22})));
   });
 
-  /* ---- cities ---- */
+  /* starfield (persists behind whole page) */
+  const stars = (function(){
+    const N = 700, pos = new Float32Array(N*3);
+    for(let i=0;i<N;i++){
+      const r = 14 + Math.random()*38;
+      const t = Math.random()*Math.PI*2, p = Math.acos(2*Math.random()-1);
+      pos.set([r*Math.sin(p)*Math.cos(t), r*Math.sin(p)*Math.sin(t), -Math.abs(r*Math.cos(p))-4], i*3);
+    }
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.BufferAttribute(pos,3));
+    const m = new THREE.Points(g, new THREE.PointsMaterial({color:0x9BB8D8, size:.06, transparent:true, opacity:.6, depthWrite:false}));
+    scene.add(m); return m;
+  })();
+
+  /* cities */
   const CITIES = [
     ["Kathmandu",27.7,85.3,true],["New York",40.7,-74.0],["San Francisco",37.8,-122.4],
     ["London",51.5,-0.1],["Frankfurt",50.1,8.7],["Paris",48.9,2.4],["Amsterdam",52.4,4.9],
@@ -643,14 +861,14 @@ const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   ];
   CITIES.forEach(([name,lat,lon,home])=>{
     const m = new THREE.Mesh(
-      new THREE.SphereGeometry(home? .05 : .034, 8, 8),
+      new THREE.SphereGeometry(home? .05 : .032, 8, 8),
       new THREE.MeshBasicMaterial({color: home? 0xFBBF24 : 0x67E8F9})
     );
     m.position.copy(latLon(lat,lon,R+.01));
     globe.add(m);
   });
 
-  /* ---- attack simulation ---- */
+  /* attack simulation */
   const TYPES = [
     ["DDoS",        0x67E8F9, "LOW"],
     ["BRUTE_FORCE", 0xFBBF24, "MED"],
@@ -667,7 +885,6 @@ const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const sevEl = document.getElementById('tl-sev');
   const countEl = document.getElementById('atk-count');
   let attackCount = 0;
-
   const fakeIP = () => `${10+Math.floor(Math.random()*210)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${1+Math.floor(Math.random()*250)}`;
 
   function spawnAttack(){
@@ -682,13 +899,11 @@ const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const dist = a.distanceTo(b);
     const mid = a.clone().add(b).multiplyScalar(.5).normalize().multiplyScalar(R + .35 + dist*.28);
     const curve = new THREE.QuadraticBezierCurve3(a, mid, b);
-    const pts = curve.getPoints(80);
-    const geo = new THREE.BufferGeometry().setFromPoints(pts);
+    const geo = new THREE.BufferGeometry().setFromPoints(curve.getPoints(80));
     geo.setDrawRange(0, 0);
     const line = new THREE.Line(geo, new THREE.LineBasicMaterial({color, transparent:true, opacity:.85}));
     globe.add(line);
 
-    // impact pulse ring at target
     const ring = new THREE.Mesh(
       new THREE.RingGeometry(.045, .065, 24),
       new THREE.MeshBasicMaterial({color, transparent:true, opacity:0, side:THREE.DoubleSide})
@@ -696,10 +911,8 @@ const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     ring.position.copy(latLon(tlat, tlon, R+.012));
     ring.lookAt(ring.position.clone().multiplyScalar(2));
     globe.add(ring);
-
     arcs.push({line, ring, t:0});
 
-    // log entry
     attackCount++;
     countEl.textContent = attackCount;
     sevEl.textContent = "SEV: " + sev;
@@ -717,13 +930,13 @@ const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     for(let i = arcs.length-1; i >= 0; i--){
       const A = arcs[i];
       A.t += .016;
-      if(A.t < 1){               // draw head
+      if(A.t < 1){
         A.line.geometry.setDrawRange(0, Math.floor(A.t*81));
-      } else if(A.t < 1.6){      // impact pulse
+      } else if(A.t < 1.6){
         const p = (A.t-1)/.6;
         A.ring.material.opacity = .9*(1-p);
         A.ring.scale.setScalar(1 + p*5);
-      } else if(A.t < 2.4){      // fade arc
+      } else if(A.t < 2.4){
         A.line.material.opacity = .85 * (1-(A.t-1.6)/.8);
       } else {
         globe.remove(A.line); globe.remove(A.ring);
@@ -733,35 +946,151 @@ const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       }
     }
   }
-
   if(!reduced){
     spawnAttack();
     (function schedule(){
-      setTimeout(()=>{ spawnAttack(); schedule(); }, 700 + Math.random()*1300);
+      setTimeout(()=>{ if(scrollProgress() < 1.4) spawnAttack(); schedule(); }, 700 + Math.random()*1300);
     })();
   }
 
-  /* ---- drag to rotate ---- */
+  /* drag rotate (only over the hero globe zone) */
   let drag=false, px=0, py=0, vx=0, vy=.0014;
   const startD=(x,y)=>{drag=true;px=x;py=y};
   const moveD=(x,y)=>{ if(!drag) return; vy=(x-px)*.004; vx=(y-py)*.004; px=x; py=y; };
-  wrap.addEventListener('mousedown',e=>startD(e.clientX,e.clientY));
+  zone.addEventListener('mousedown',e=>startD(e.clientX,e.clientY));
   window.addEventListener('mousemove',e=>moveD(e.clientX,e.clientY));
   window.addEventListener('mouseup',()=>drag=false);
-  wrap.addEventListener('touchstart',e=>startD(e.touches[0].clientX,e.touches[0].clientY),{passive:true});
-  wrap.addEventListener('touchmove',e=>moveD(e.touches[0].clientX,e.touches[0].clientY),{passive:true});
+  zone.addEventListener('touchstart',e=>startD(e.touches[0].clientX,e.touches[0].clientY),{passive:true});
+  zone.addEventListener('touchmove',e=>moveD(e.touches[0].clientX,e.touches[0].clientY),{passive:true});
   window.addEventListener('touchend',()=>drag=false);
+
+  /* subtle mouse parallax on camera */
+  let mx=0, my=0;
+  window.addEventListener('mousemove',e=>{
+    mx = (e.clientX/innerWidth - .5);
+    my = (e.clientY/innerHeight - .5);
+  });
+
+  const scrollProgress = () => window.scrollY / innerHeight;
 
   (function loop(){
     requestAnimationFrame(loop);
+    const sp = Math.min(scrollProgress(), 2.2);
+    /* globe parks in hero, sinks away on scroll */
+    const sink = Math.min(sp*1.15, 1);
+    globe.position.set(baseX - sink*baseX*.4, baseY - sink*7.2, -sink*4);
+    const s = baseScale * (1 - sink*.35);
+    globe.scale.setScalar(s);
+    halo.position.copy(globe.position);
+    halo.scale.setScalar(s);
+
     if(!reduced){
       globe.rotation.y += drag ? vy : (vy = vy*.95 + .0014*.05);
       globe.rotation.x += vx; vx *= .9;
       globe.rotation.x = Math.max(-.9, Math.min(.9, globe.rotation.x));
+      stars.rotation.y += .00025;
+      stars.rotation.x = sp*.06 + my*.02;
+      stars.rotation.z = mx*.02;
+      camera.position.x += (mx*.5 - camera.position.x)*.04;
+      camera.position.y += (-my*.35 - camera.position.y)*.04;
       tickArcs();
     }
     renderer.render(scene, camera);
   })();
+})();
+
+/* ================================================================
+   ABOUT TERMINAL — typed output
+   ================================================================ */
+(function(){
+  const body = document.getElementById('term-body');
+  const SCRIPT = [
+    ["p","$ cat about.txt"],
+    ["o","Hi — I'm Tansang. I break things on purpose so they"],
+    ["o","can't be broken by accident. Based in Kathmandu, NP."],
+    ["o",""],
+    ["p","$ ./interests --list"],
+    ["k","> web exploitation   > network forensics"],
+    ["k","> malware analysis   > detection engineering"],
+    ["o",""],
+    ["p","$ current_focus"],
+    ["o","Building security tooling + grinding boot2root labs."],
+    ["c","# scroll down for receipts ↓"]
+  ];
+  let started = false;
+  function run(){
+    if(started) return; started = true;
+    if(reduced){
+      body.innerHTML = SCRIPT.map(([c,t])=>`<div class="${c}">${t||"&nbsp;"}</div>`).join("");
+      return;
+    }
+    let li = 0;
+    (function next(){
+      if(li >= SCRIPT.length) return;
+      const [cls, text] = SCRIPT[li++];
+      const div = document.createElement('div');
+      div.className = cls;
+      body.appendChild(div);
+      if(!text){ div.innerHTML = "&nbsp;"; return next(); }
+      let ci = 0;
+      (function type(){
+        div.textContent = text.slice(0, ++ci);
+        if(ci < text.length) setTimeout(type, 10 + Math.random()*16);
+        else setTimeout(next, 130);
+      })();
+    })();
+  }
+  new IntersectionObserver((es,obs)=>{
+    if(es[0].isIntersecting){ run(); obs.disconnect(); }
+  },{threshold:.4}).observe(body);
+})();
+
+/* ================================================================
+   DECRYPT HEADINGS — scramble-to-resolve on reveal
+   ================================================================ */
+(function(){
+  const CHARS = "!<>-_\\/[]{}—=+*^?#$%&";
+  document.querySelectorAll('[data-decrypt]').forEach(el=>{
+    const final = el.textContent;
+    if(reduced) return;
+    el.textContent = "";
+    new IntersectionObserver((es,obs)=>{
+      if(!es[0].isIntersecting) return;
+      obs.disconnect();
+      let frame = 0;
+      const total = 26;
+      (function tick(){
+        frame++;
+        const progress = frame/total;
+        el.textContent = final.split("").map((ch,i)=>{
+          if(ch === " ") return " ";
+          return (i/final.length < progress) ? ch : CHARS[Math.floor(Math.random()*CHARS.length)];
+        }).join("");
+        if(frame < total) requestAnimationFrame(tick);
+        else el.textContent = final;
+      })();
+    },{threshold:.6}).observe(el);
+  });
+})();
+
+/* ================================================================
+   STAT COUNTERS
+   ================================================================ */
+(function(){
+  document.querySelectorAll('[data-count]').forEach(el=>{
+    const target = +el.dataset.count, suffix = el.dataset.suffix || "";
+    if(reduced){ el.textContent = target + suffix; return; }
+    new IntersectionObserver((es,obs)=>{
+      if(!es[0].isIntersecting) return;
+      obs.disconnect();
+      const t0 = performance.now(), dur = 1300;
+      (function tick(now){
+        const p = Math.min((now-t0)/dur, 1);
+        el.textContent = Math.round(target * (1-Math.pow(1-p,3))) + suffix;
+        if(p < 1) requestAnimationFrame(tick);
+      })(t0);
+    },{threshold:.6}).observe(el);
+  });
 })();
 
 /* ============ 3D tilt cards ============ */
@@ -778,16 +1107,38 @@ if(!reduced && matchMedia('(pointer:fine)').matches){
   });
 }
 
-/* ============ Parallax SVG layers ============ */
+/* ============ Parallax hex grid ============ */
 if(!reduced){
   const grid = document.getElementById('bg-grid');
-  const topo = document.getElementById('bg-topo');
   window.addEventListener('scroll', ()=>{
-    const y = window.scrollY;
-    grid.style.transform = `translateY(${y*-.06}px)`;
-    topo.style.transform = `translateY(${y*-.14}px)`;
+    grid.style.transform = `translateY(${window.scrollY*-.06}px)`;
   }, {passive:true});
 }
+
+/* ============ Active nav highlighting ============ */
+(function(){
+  const links = [...document.querySelectorAll('nav a')];
+  const map = {};
+  links.forEach(a => map[a.getAttribute('href').slice(1)] = a);
+  const obs = new IntersectionObserver(es=>{
+    es.forEach(e=>{
+      if(e.isIntersecting && map[e.target.id]){
+        links.forEach(a=>a.classList.remove('active'));
+        map[e.target.id].classList.add('active');
+      }
+    });
+  },{rootMargin:"-40% 0px -55% 0px"});
+  document.querySelectorAll('header[id], section[id], footer[id]').forEach(s=>obs.observe(s));
+})();
+
+/* ============ Copy email ============ */
+document.getElementById('copy-mail').addEventListener('click', function(){
+  const btn = this;
+  navigator.clipboard.writeText(EMAIL).then(()=>{
+    btn.textContent = "copied ✓";
+    setTimeout(()=>btn.textContent = "copy email", 1600);
+  }).catch(()=>{ location.href = "mailto:" + EMAIL; });
+});
 
 /* ============ Scroll reveal ============ */
 const io = new IntersectionObserver(es=>es.forEach(e=>{
