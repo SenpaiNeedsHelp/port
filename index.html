@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tansang Thapa Magar — Cybersecurity Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Sora:wght@300;400;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#04070E;
+  --glass:rgba(255,255,255,0.07);
+  --glass-strong:rgba(255,255,255,0.11);
+  --edge:rgba(255,255,255,0.17);
+  --edge-soft:rgba(255,255,255,0.09);
+  --cyan:#67E8F9;
+  --violet:#818CF8;
+  --signal:#FBBF24;
+  --danger:#FB7185;
+  --ok:#34D399;
+  --text:#EDF1F8;
+  --muted:#93A0B6;
+  --radius:26px;
+  --blur:blur(28px) saturate(190%);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--ink);
+  color:var(--text);
+  font-family:'Sora',sans-serif;
+  font-weight:300;
+  overflow-x:hidden;
+  line-height:1.6;
+}
+::selection{background:rgba(103,232,249,.25)}
+
+/* ============ LIQUID GLASS PRIMITIVES ============ */
+.glass{
+  position:relative;
+  background:var(--glass);
+  backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+  border:1px solid var(--edge-soft);
+  border-top-color:var(--edge);
+  box-shadow:0 20px 50px rgba(0,0,0,.45),
+             inset 0 1px 0 rgba(255,255,255,.18),
+             inset 0 -1px 0 rgba(255,255,255,.03);
+}
+.glass::before{ /* specular sheen */
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:linear-gradient(118deg,rgba(255,255,255,.14) 0%,rgba(255,255,255,.04) 22%,transparent 42%);
+}
+
+/* ---------- SVG BACKGROUND LAYERS ---------- */
+.bg-layer{position:fixed;inset:0;z-index:-3;pointer-events:none}
+.bg-layer svg{width:100%;height:100%;display:block}
+#bg-aurora{z-index:-4}
+#bg-grid{z-index:-3;opacity:.5}
+#bg-topo{z-index:-2;opacity:.35}
+
+/* ---------- NAV ---------- */
+nav{
+  position:fixed;top:18px;left:50%;transform:translateX(-50%);
+  display:flex;align-items:center;gap:4px;
+  padding:8px 10px;border-radius:100px;z-index:50;
+  background:rgba(255,255,255,.07);
+  backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+  border:1px solid var(--edge-soft);border-top-color:var(--edge);
+  box-shadow:0 12px 40px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.2);
+}
+nav .brand{
+  font-family:'IBM Plex Mono',monospace;font-size:.8rem;color:var(--cyan);
+  padding:6px 14px;letter-spacing:.05em;white-space:nowrap;
+}
+nav a{
+  font-family:'IBM Plex Mono',monospace;font-size:.78rem;color:var(--muted);
+  text-decoration:none;padding:8px 16px;border-radius:100px;transition:.25s;
+}
+nav a:hover,nav a:focus-visible{
+  color:var(--text);background:rgba(255,255,255,.12);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.25);
+}
+nav a:focus-visible{outline:1px solid var(--cyan)}
+
+/* ---------- HERO ---------- */
+.hero{
+  min-height:100vh;display:grid;grid-template-columns:.95fr 1.05fr;
+  align-items:center;gap:42px;
+  max-width:1280px;margin:0 auto;padding:120px 32px 60px;
+}
+.eyebrow{
+  font-family:'IBM Plex Mono',monospace;font-size:.8rem;color:var(--cyan);
+  letter-spacing:.08em;display:flex;align-items:center;gap:10px;
+}
+.eyebrow::before{content:"";width:34px;height:1px;background:linear-gradient(90deg,var(--cyan),transparent)}
+.cursor{display:inline-block;width:8px;height:15px;background:var(--cyan);animation:blink 1.1s steps(1) infinite;vertical-align:-2px}
+@keyframes blink{50%{opacity:0}}
+h1{
+  font-family:'Unbounded',sans-serif;font-weight:800;
+  font-size:clamp(2.1rem,4.6vw,3.7rem);line-height:1.07;
+  margin:22px 0 18px;letter-spacing:-.01em;
+}
+h1 .grad{
+  background:linear-gradient(100deg,var(--cyan) 0%,var(--violet) 55%,#C4B5FD 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero p.sub{max-width:46ch;color:var(--muted);font-size:1rem}
+.hero .roles{
+  font-family:'IBM Plex Mono',monospace;font-size:.8rem;color:var(--text);
+  margin:20px 0 30px;display:flex;flex-wrap:wrap;gap:8px;
+}
+.roles span{
+  padding:7px 13px;border-radius:100px;background:var(--glass);
+  border:1px solid var(--edge-soft);border-top-color:var(--edge);
+  backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.15);
+}
+.roles span b{color:var(--signal);font-weight:500}
+.roles span b.ok{color:var(--ok)}
+.cta-row{display:flex;gap:14px;flex-wrap:wrap}
+.btn{
+  font-family:'IBM Plex Mono',monospace;font-size:.85rem;text-decoration:none;
+  padding:14px 27px;border-radius:100px;transition:.25s;display:inline-block;
+}
+.btn-primary{
+  color:#04121a;background:linear-gradient(120deg,var(--cyan),#22D3EE);
+  box-shadow:0 8px 28px rgba(103,232,249,.3), inset 0 1px 0 rgba(255,255,255,.55);
+  font-weight:500;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 34px rgba(103,232,249,.42), inset 0 1px 0 rgba(255,255,255,.55)}
+.btn-ghost{
+  color:var(--text);background:var(--glass);
+  border:1px solid var(--edge-soft);border-top-color:var(--edge);
+  backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.2);
+}
+.btn-ghost:hover{border-color:rgba(103,232,249,.5);transform:translateY(-2px)}
+
+/* ---------- THREAT MAP PANEL ---------- */
+.hero-3d{
+  position:relative;height:580px;border-radius:34px;overflow:hidden;
+  background:rgba(255,255,255,.05);
+  border:1px solid var(--edge-soft);border-top-color:var(--edge);
+  backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+  box-shadow:0 30px 80px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.18);
+}
+.hero-3d::before{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:5;
+  background:linear-gradient(118deg,rgba(255,255,255,.1) 0%,transparent 30%);
+}
+#three-canvas{width:100%;height:100%;display:block;cursor:grab}
+#three-canvas:active{cursor:grabbing}
+.hud{
+  position:absolute;font-family:'IBM Plex Mono',monospace;font-size:.66rem;
+  color:var(--muted);letter-spacing:.06em;pointer-events:none;z-index:6;
+}
+.hud.tl{top:18px;left:20px;display:flex;align-items:center;gap:8px}
+.hud.tl .dot{width:7px;height:7px;border-radius:50%;background:var(--danger);animation:pulse 1.4s infinite}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(251,113,133,.5)}50%{opacity:.6;box-shadow:0 0 0 6px rgba(251,113,133,0)}}
+.hud.tr{top:18px;right:20px;color:var(--cyan)}
+.hud.br{bottom:18px;right:20px}
+.hud .ok{color:var(--ok)}
+
+/* live threat log */
+.threat-log{
+  position:absolute;left:16px;bottom:16px;z-index:6;
+  width:min(330px,calc(100% - 32px));
+  border-radius:20px;padding:13px 15px;
+  background:rgba(10,16,28,.42);
+  backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);
+  border:1px solid var(--edge-soft);border-top-color:var(--edge);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.14), 0 12px 30px rgba(0,0,0,.35);
+  font-family:'IBM Plex Mono',monospace;
+}
+.threat-log .tl-head{
+  font-size:.62rem;color:var(--muted);letter-spacing:.12em;margin-bottom:8px;
+  display:flex;justify-content:space-between;
+}
+.threat-log .tl-head b{color:var(--signal);font-weight:500}
+.tl-entries{display:flex;flex-direction:column;gap:5px;overflow:hidden}
+.tl-entry{
+  font-size:.64rem;color:var(--text);display:flex;align-items:center;gap:8px;
+  opacity:0;transform:translateY(-6px);animation:slidein .4s forwards;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+@keyframes slidein{to{opacity:1;transform:none}}
+.tl-entry .sev{width:6px;height:6px;border-radius:50%;flex:none}
+.tl-entry .typ{color:var(--cyan);min-width:86px}
+.tl-entry .route{color:var(--muted)}
+
+/* ---------- SECTIONS ---------- */
+section{max-width:1280px;margin:0 auto;padding:110px 32px}
+.sec-head{margin-bottom:54px}
+.sec-head .tag{
+  font-family:'IBM Plex Mono',monospace;font-size:.78rem;color:var(--violet);
+  letter-spacing:.1em;
+}
+.sec-head h2{
+  font-family:'Unbounded',sans-serif;font-weight:600;
+  font-size:clamp(1.6rem,3vw,2.4rem);margin-top:10px;
+}
+
+/* ---------- SKILLS ---------- */
+.skills-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.skill-card{
+  border-radius:var(--radius);padding:26px 24px;
+  transition:transform .3s, border-color .3s;
+  transform-style:preserve-3d;will-change:transform;
+}
+.skill-card:hover{border-color:rgba(129,140,248,.45)}
+.skill-card .ic{
+  width:46px;height:46px;border-radius:14px;display:grid;place-items:center;
+  background:linear-gradient(135deg,rgba(103,232,249,.18),rgba(129,140,248,.18));
+  border:1px solid var(--edge-soft);border-top-color:var(--edge);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.25);margin-bottom:16px;
+}
+.skill-card h3{font-family:'Unbounded',sans-serif;font-weight:400;font-size:.95rem;margin-bottom:14px}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chips span{
+  font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:var(--muted);
+  padding:5px 11px;border-radius:100px;background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);transition:.2s;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
+}
+.skill-card:hover .chips span{color:var(--text)}
+
+/* ---------- PROJECTS ---------- */
+.proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;perspective:1200px}
+.proj-card{
+  border-radius:var(--radius);padding:28px 26px;
+  transform-style:preserve-3d;transition:border-color .3s;will-change:transform;
+  display:flex;flex-direction:column;gap:14px;
+}
+.proj-card::after{ /* cursor glare */
+  content:"";position:absolute;inset:0;border-radius:var(--radius);
+  background:radial-gradient(440px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.1),transparent 45%);
+  opacity:0;transition:opacity .3s;pointer-events:none;
+}
+.proj-card:hover::after{opacity:1}
+.proj-card:hover{border-color:rgba(103,232,249,.4)}
+.proj-top{display:flex;justify-content:space-between;align-items:flex-start;transform:translateZ(30px)}
+.proj-ic{
+  width:50px;height:50px;border-radius:15px;display:grid;place-items:center;
+  background:linear-gradient(135deg,rgba(103,232,249,.15),rgba(129,140,248,.2));
+  border:1px solid var(--edge-soft);border-top-color:var(--edge);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.25);
+}
+.proj-num{font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:var(--muted)}
+.proj-card h3{font-family:'Unbounded',sans-serif;font-weight:400;font-size:1.02rem;transform:translateZ(26px)}
+.proj-card p{color:var(--muted);font-size:.88rem;flex:1;transform:translateZ(18px)}
+.proj-tags{display:flex;flex-wrap:wrap;gap:7px;transform:translateZ(20px)}
+.proj-tags span{
+  font-family:'IBM Plex Mono',monospace;font-size:.66rem;color:var(--cyan);
+  padding:4px 10px;border-radius:100px;background:rgba(103,232,249,.09);
+  border:1px solid rgba(103,232,249,.2);
+}
+.proj-link{
+  font-family:'IBM Plex Mono',monospace;font-size:.78rem;color:var(--text);
+  text-decoration:none;display:inline-flex;align-items:center;gap:8px;
+  transform:translateZ(24px);width:max-content;
+}
+.proj-link svg{transition:transform .25s}
+.proj-link:hover{color:var(--cyan)}
+.proj-link:hover svg{transform:translate(3px,-3px)}
+
+/* ---------- FOOTER ---------- */
+footer{max-width:1280px;margin:0 auto 60px;padding:0 32px}
+.foot-card{
+  border-radius:34px;padding:54px 40px;text-align:center;
+  background:linear-gradient(160deg,rgba(103,232,249,.08),rgba(129,140,248,.1));
+}
+.foot-card h2{font-family:'Unbounded',sans-serif;font-weight:600;font-size:clamp(1.4rem,2.6vw,2rem);margin-bottom:12px}
+.foot-card p{color:var(--muted);margin-bottom:26px}
+.socials{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;position:relative;z-index:1}
+.socials a{
+  font-family:'IBM Plex Mono',monospace;font-size:.8rem;color:var(--text);
+  text-decoration:none;padding:12px 22px;border-radius:100px;
+  background:var(--glass);border:1px solid var(--edge-soft);border-top-color:var(--edge);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.2);transition:.25s;
+  backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+}
+.socials a:hover{border-color:rgba(103,232,249,.5);transform:translateY(-2px);color:var(--cyan)}
+.copy{
+  text-align:center;font-family:'IBM Plex Mono',monospace;font-size:.7rem;
+  color:var(--muted);margin-top:34px;letter-spacing:.05em;
+}
+
+/* reveal on scroll */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease, transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation:none!important;transition:none!important;scroll-behavior:auto}
+  .reveal{opacity:1;transform:none}
+}
+@media (max-width:1020px){
+  .hero{grid-template-columns:1fr;padding-top:130px}
+  .hero-3d{height:440px}
+  .skills-grid{grid-template-columns:repeat(2,1fr)}
+  .proj-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:640px){
+  nav{gap:0;padding:6px}
+  nav a{padding:7px 10px;font-size:.7rem}
+  nav .brand{display:none}
+  .skills-grid,.proj-grid{grid-template-columns:1fr}
+  section{padding:80px 22px}
+  .hero{padding-left:22px;padding-right:22px}
+  .hero-3d{height:400px}
+  .threat-log{width:calc(100% - 32px)}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ SVG BACKGROUND: aurora gradient mesh ============ -->
+<div class="bg-layer" id="bg-aurora" aria-hidden="true">
+<svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <radialGradient id="g1" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#0E7490" stop-opacity=".6"/>
+      <stop offset="100%" stop-color="#0E7490" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="g2" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#4338CA" stop-opacity=".55"/>
+      <stop offset="100%" stop-color="#4338CA" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="g3" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#155E75" stop-opacity=".45"/>
+      <stop offset="100%" stop-color="#155E75" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft"><feGaussianBlur stdDeviation="60"/></filter>
+  </defs>
+  <rect width="1440" height="900" fill="#04070E"/>
+  <g filter="url(#soft)">
+    <ellipse cx="280" cy="180" rx="430" ry="320" fill="url(#g1)">
+      <animate attributeName="cx" values="280;420;280" dur="26s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="1180" cy="260" rx="480" ry="360" fill="url(#g2)">
+      <animate attributeName="cy" values="260;420;260" dur="32s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="760" cy="820" rx="560" ry="340" fill="url(#g3)">
+      <animate attributeName="cx" values="760;600;760" dur="38s" repeatCount="indefinite"/>
+    </ellipse>
+  </g>
+</svg>
+</div>
+
+<!-- ============ SVG BACKGROUND: hex security grid (parallax) ============ -->
+<div class="bg-layer" id="bg-grid" aria-hidden="true">
+<svg width="100%" height="100%">
+  <defs>
+    <pattern id="hex" width="56" height="48.5" patternUnits="userSpaceOnUse" patternTransform="scale(1.4)">
+      <path d="M14 0 L42 0 L56 24.25 L42 48.5 L14 48.5 L0 24.25 Z"
+            fill="none" stroke="rgba(135,165,210,0.07)" stroke-width="1"/>
+    </pattern>
+    <radialGradient id="fade" cx="50%" cy="35%" r="75%">
+      <stop offset="0%" stop-color="white" stop-opacity="1"/>
+      <stop offset="100%" stop-color="white" stop-opacity="0"/>
+    </radialGradient>
+    <mask id="hexmask"><rect width="100%" height="100%" fill="url(#fade)"/></mask>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#hex)" mask="url(#hexmask)"/>
+</svg>
+</div>
+
+<!-- ============ SVG BACKGROUND: signal waves (parallax) ============ -->
+<div class="bg-layer" id="bg-topo" aria-hidden="true">
+<svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+  <g fill="none" stroke-width="1">
+    <path d="M-50 700 Q 360 620 720 700 T 1490 700" stroke="rgba(103,232,249,0.10)"/>
+    <path d="M-50 740 Q 360 660 720 740 T 1490 740" stroke="rgba(103,232,249,0.07)"/>
+    <path d="M-50 780 Q 360 700 720 780 T 1490 780" stroke="rgba(129,140,248,0.08)"/>
+    <path d="M-50 820 Q 360 740 720 820 T 1490 820" stroke="rgba(129,140,248,0.05)"/>
+  </g>
+</svg>
+</div>
+
+<!-- ============ NAV ============ -->
+<nav>
+  <span class="brand">~/tansang</span>
+  <a href="#skills">skills</a>
+  <a href="#projects">projects</a>
+  <a href="#contact">contact</a>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div>
+    <div class="eyebrow">$ whoami<span class="cursor"></span></div>
+    <h1>Tansang Thapa Magar<br><span class="grad">securing the digital frontier.</span></h1>
+    <p class="sub">Cybersecurity specialist focused on offensive security, threat detection, and building tools that make systems harder to break. I think like an attacker so defenses actually hold.</p>
+    <div class="roles">
+      <span>role: <b>penetration_tester</b></span>
+      <span>status: <b class="ok">open_to_work</b></span>
+      <span>loc: <b>kathmandu_np</b></span>
+    </div>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="#projects">view projects →</a>
+      <a class="btn btn-ghost" href="#contact">./contact_me</a>
+    </div>
+  </div>
+
+  <div class="hero-3d" id="globe-wrap">
+    <canvas id="three-canvas"></canvas>
+    <span class="hud tl"><span class="dot"></span>GLOBAL THREAT MAP // SIMULATED FEED</span>
+    <span class="hud tr">⬡ ATTACKS: <span id="atk-count">0</span></span>
+    <span class="hud br">drag to rotate</span>
+    <div class="threat-log">
+      <div class="tl-head"><span>LIVE_THREAT_LOG</span><b id="tl-sev">SEV: ----</b></div>
+      <div class="tl-entries" id="tl-entries"></div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ SKILLS ============ -->
+<section id="skills">
+  <div class="sec-head reveal">
+    <span class="tag">[01] capabilities</span>
+    <h2>Skills &amp; Arsenal</h2>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-card glass reveal" data-tilt>
+      <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#67E8F9" stroke-width="1.6"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg></div>
+      <h3>Offensive Security</h3>
+      <div class="chips"><span>pentesting</span><span>web_app_sec</span><span>privilege_esc</span><span>OSINT</span><span>social_eng</span><span>red_teaming</span></div>
+    </div>
+    <div class="skill-card glass reveal" data-tilt>
+      <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#818CF8" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="3.5"/></svg></div>
+      <h3>Defensive &amp; Blue Team</h3>
+      <div class="chips"><span>SIEM</span><span>incident_response</span><span>log_analysis</span><span>threat_hunting</span><span>hardening</span><span>forensics</span></div>
+    </div>
+    <div class="skill-card glass reveal" data-tilt>
+      <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FBBF24" stroke-width="1.6"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M7 9l3 3-3 3M12 15h5"/></svg></div>
+      <h3>Tooling</h3>
+      <div class="chips"><span>nmap</span><span>burp_suite</span><span>metasploit</span><span>wireshark</span><span>ghidra</span><span>hashcat</span><span>splunk</span></div>
+    </div>
+    <div class="skill-card glass reveal" data-tilt>
+      <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#34D399" stroke-width="1.6"><path d="M8 6l-5 6 5 6M16 6l5 6-5 6M13 4l-2 16"/></svg></div>
+      <h3>Languages &amp; Systems</h3>
+      <div class="chips"><span>python</span><span>bash</span><span>C</span><span>SQL</span><span>linux</span><span>docker</span><span>networking</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROJECTS ============ -->
+<section id="projects">
+  <div class="sec-head reveal">
+    <span class="tag">[02] selected work</span>
+    <h2>Projects</h2>
+  </div>
+  <div class="proj-grid">
+
+    <article class="proj-card glass reveal" data-tilt>
+      <div class="proj-top">
+        <div class="proj-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#67E8F9" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/><path d="M8 11h6M11 8v6"/></svg></div>
+        <span class="proj-num">P-001</span>
+      </div>
+      <h3>NetRecon — Port Scanner</h3>
+      <p>Multithreaded TCP/UDP port scanner with banner grabbing, service fingerprinting and JSON report export. Scans a /24 in under a minute.</p>
+      <div class="proj-tags"><span>python</span><span>sockets</span><span>threading</span></div>
+      <a class="proj-link" href="#">view code <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+    </article>
+
+    <article class="proj-card glass reveal" data-tilt>
+      <div class="proj-top">
+        <div class="proj-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#818CF8" stroke-width="1.6"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/><circle cx="12" cy="15" r="1.6" fill="#818CF8"/></svg></div>
+        <span class="proj-num">P-002</span>
+      </div>
+      <h3>VaultPass — Password Auditor</h3>
+      <p>Password strength analyzer + breach checker using k-anonymity against the HaveIBeenPwned API, with entropy scoring and a wordlist generator.</p>
+      <div class="proj-tags"><span>python</span><span>API</span><span>crypto</span></div>
+      <a class="proj-link" href="#">view code <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+    </article>
+
+    <article class="proj-card glass reveal" data-tilt>
+      <div class="proj-top">
+        <div class="proj-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FBBF24" stroke-width="1.6"><path d="M3 12h4l2-6 4 12 2-6h6"/></svg></div>
+        <span class="proj-num">P-003</span>
+      </div>
+      <h3>PacketLens — Sniffer &amp; Analyzer</h3>
+      <p>Live network packet sniffer built on Scapy with protocol breakdown, anomaly flags for ARP spoofing, and PCAP export for Wireshark.</p>
+      <div class="proj-tags"><span>scapy</span><span>networking</span><span>CLI</span></div>
+      <a class="proj-link" href="#">view code <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+    </article>
+
+    <article class="proj-card glass reveal" data-tilt>
+      <div class="proj-top">
+        <div class="proj-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#34D399" stroke-width="1.6"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"/><path d="M12 8v5M12 16h.01"/></svg></div>
+        <span class="proj-num">P-004</span>
+      </div>
+      <h3>PhishGuard — URL Detector</h3>
+      <p>Machine-learning phishing URL classifier trained on lexical + WHOIS features, served as a browser-friendly API with ~96% test accuracy.</p>
+      <div class="proj-tags"><span>ML</span><span>scikit-learn</span><span>flask</span></div>
+      <a class="proj-link" href="#">view code <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+    </article>
+
+    <article class="proj-card glass reveal" data-tilt>
+      <div class="proj-top">
+        <div class="proj-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F472B6" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M7 8h10M7 12h7M7 16h4"/></svg></div>
+        <span class="proj-num">P-005</span>
+      </div>
+      <h3>SIEM Home Lab</h3>
+      <p>Self-hosted detection lab: Wazuh + Elastic stack ingesting logs from segmented VMs, with custom detection rules and simulated attack playbooks.</p>
+      <div class="proj-tags"><span>wazuh</span><span>elastic</span><span>virtualization</span></div>
+      <a class="proj-link" href="#">read writeup <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+    </article>
+
+    <article class="proj-card glass reveal" data-tilt>
+      <div class="proj-top">
+        <div class="proj-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#67E8F9" stroke-width="1.6"><path d="M14 7l-5 5 5 5"/><circle cx="12" cy="12" r="9.2" stroke-dasharray="4 3"/></svg></div>
+        <span class="proj-num">P-006</span>
+      </div>
+      <h3>CipherBox — Encryption Tool</h3>
+      <p>File encryption utility implementing AES-256-GCM with PBKDF2 key derivation, secure-delete of plaintext, and a drag-and-drop GUI.</p>
+      <div class="proj-tags"><span>cryptography</span><span>AES</span><span>GUI</span></div>
+      <a class="proj-link" href="#">view code <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+    </article>
+
+  </div>
+</section>
+
+<!-- ============ CONTACT / FOOTER ============ -->
+<footer id="contact">
+  <div class="foot-card glass reveal">
+    <h2>Let's Connect</h2>
+    <p>Open to new opportunities and collaborations. Feel free to reach out.</p>
+    <div class="socials">
+      <a href="mailto:tansangthapa@gmail.com">tansangthapa@gmail.com</a>
+    </div>
+  </div>
+  <div class="copy reveal">
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ================================================================
+   3D GLOBE THREAT MAP — simulated live feed
+   Continents are real: a land bitmask (1.5° grid, lat -60..75)
+   generated from world land data and embedded below as base64.
+   ================================================================ */
+(function(){
+  const wrap = document.getElementById('globe-wrap');
+  const canvas = document.getElementById('three-canvas');
+  const renderer = new THREE.WebGLRenderer({canvas, alpha:true, antialias:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, 1, .1, 100);
+  camera.position.z = 7.6;
+
+  function size(){
+    const r = wrap.getBoundingClientRect();
+    renderer.setSize(r.width, r.height, false);
+    camera.aspect = r.width / r.height;
+    camera.updateProjectionMatrix();
+  }
+  size(); window.addEventListener('resize', size);
+
+  const R = 2.55;
+  const globe = new THREE.Group();
+  globe.rotation.x = .35;
+  scene.add(globe);
+
+  const latLon = (lat, lon, r=R) => {
+    const phi = (90 - lat) * Math.PI/180, theta = (lon + 180) * Math.PI/180;
+    return new THREE.Vector3(
+      -r * Math.sin(phi) * Math.cos(theta),
+       r * Math.cos(phi),
+       r * Math.sin(phi) * Math.sin(theta)
+    );
+  };
+
+  /* ---- occluder sphere (hides back-side dots, glassy tint) ---- */
+  globe.add(new THREE.Mesh(
+    new THREE.SphereGeometry(R - .035, 48, 48),
+    new THREE.MeshBasicMaterial({color:0x0A1322, transparent:true, opacity:.92})
+  ));
+
+  /* ---- atmosphere halo (procedural sprite, no external assets) ---- */
+  (function(){
+    const c = document.createElement('canvas'); c.width = c.height = 256;
+    const g = c.getContext('2d');
+    const grad = g.createRadialGradient(128,128,80, 128,128,128);
+    grad.addColorStop(0,'rgba(103,232,249,0)');
+    grad.addColorStop(.72,'rgba(103,232,249,.16)');
+    grad.addColorStop(.92,'rgba(129,140,248,.1)');
+    grad.addColorStop(1,'rgba(129,140,248,0)');
+    g.fillStyle = grad; g.fillRect(0,0,256,256);
+    const sprite = new THREE.Sprite(new THREE.SpriteMaterial({
+      map:new THREE.CanvasTexture(c), transparent:true, depthWrite:false
+    }));
+    sprite.scale.set(R*2.85, R*2.85, 1);
+    scene.add(sprite);
+  })();
+
+  /* ---- continents from embedded land bitmask ---- */
+  const LAND_B64 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD4AAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAD+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD8AAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAA+AAAAAAAAAAAAAAAAAAAAAAAAADgAAAAAAAAAAAA+AAAAAAAAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAA+AAAAAAAAAAAAAAAAAAAAAAAYAAYAAAAAAAAAAAB/gAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAA/wAAAAAAAAAAAAAAAAAAAAAAAAAGAAAAAAAAAAAB/8AAAAAAAAAAAAAAAAAAAAAD8AAEAAAAAAAAAAAA/8AAAAAAAAAAAAAAAAAAAAAH+AAIAAAAAAAAAAAA//gAAAAAAAQAAAAAAAAAAwAH+AAAAAAAAAAAAAAAf/gAAAAAAA/gAAAAAAAAA+A//AAAAAAAAAAAAAAAf/wAAAAAAAfwAAAAAAAAA////AAAAAAAAAAAAAAAf/4AAAAAAA/4AAAAAAAAB////gAAAAAAAAAAAAAAf/8AAAAAAB/8AAAAAAAAB////gAAAAAAAAAAAAAAf/8AAAAAAB/8AAAAAAAAD////gAAAAAAAAAAAAAAf/8AAAAAAD/8AAAAAAAAD////gAAAAAAAAAAAAAAf//AAAAAAD//AwAAAAAAD///+AAAAAAAAAAAAAAAP//4AAAAAD//BwAAAAAAD///+AAAAAAAAAAAAAAAP//4AAAAAD//A4QAAAAAA///8AIAAAAAAAAAAAAAP//8AAAAAH//A4AAAAAAAH//4AAAAAAAAAAAAAAAf//8AAAAAP//g4AAAAAAAD//wAABgAAAAAAAAAAA///8AAAAAP//48AAAAAAAB/1gAAAAAAAAAAAAAAD///8AAAAAH//8MAAAAAAAA/hgAAABAAAAAAAAAAD///+AAAAAH//8EAAAAAAAAHhAAAAAAAAAAAAAAAH///+AAAAAD//8AAAAAAAAABRAAAAAAAAAAAAAAAH////AAAAAD//8AAAAAAAAAAAAAgAAAAAAAAAAAAP////gAAAAH//4AAAAAAAAggDMAAAAAAAAAAAAAAf////gAAAAH//4AAAAAAA8AAH4AAAAAAAAAAAAAA/////gAAAAH//wAAAAAAAAAAH6AAAAAAAAAAAAAA////+AAAAAP//4AAAAAAGAOAfggAAAAAAAAAAAAAf///8AAAAAf//4AAAAAAPvMJeBAAAAAAAAAAAAAAf///AAAAAAf//8AAAAAAsPOTAAAAAAAAAAAAAABAf//0AAAAAAf//+AAAAAAcfoAAAAAAAAAAAAAAAAAP//4AAAAAAf///AAAAAA0fgAAAAAAAAAAAAAAAAAH//4AAAAAAf///wAAAABoHgAAAAAAAAAAAAAAAAAH//wAAAAQD////wAAAADIDwAAAAAAAAAAAAAAAAAH/8AAAAA/j////4AAAAAYAgAAAAAAAAAAAAAAAAAP/4AAAAD//////8AAAgAAADgAAAAAAAAAAAAAAABb/wAAAAD//////8AACAAiAAgAAAAAAAAAAAAAAAGD8gAAAAH//////eAAHAAjACAAAAAAAAAAAAAAAAGAgAAAAAP/////+AAAHAIngIAAAAAAAAAAAAAAAAeAAAAAAAf//////wAAPAI/gAAAAAAAAAAAAAAAAB+AAAAAAAf/////98AAPAA/gEAAAAAAAAAAAAAAAfwAAAAAAAP/////z/wAfwH+AEAAAAAAAAAAAAAAPwwAwAAAAAP/////j/4Af4H+QAAAAAAAAAAAAAAAPw4NAAAAAAf/////n/8Bf8P/AAAAAAAAAAAAAAAAPgCwAAAAAAP/////n/8B////8AAAAAAAAAAAAAAAfgAAAAAAAAP/////P/4H/////kAAAAAAAAAAAAAA/wAgAAAAAAH/////f+D//////wAAAAAAAAAAAAAN/wAgAAAAAAD////+/8///////4AAAAAAAAAAAAAL/wBgAAAAAAB////9/5///////8AAAAAAAAAAAAAX//lAAAAAAAA//////7///////8AAAAAAAAAAAAAX///AAAAAAAA//+PB/////////4EAAAAAAAAAAAA////gAAAAAAAf/wAA/////////4EAAAAAAAAAAAD////4AAAAAAAP/gAA/////////wDQAAAAAAAAAAH////4AAAAAAAAfwAA/////////4YcAAAAAAAAAAH////8AAAAAAAfAGEf/////////wYGAAAAAAAAAAP////4AAAAAAA/QhE//////////kwCAAAAAAAAAAP////+AAAAAAAfgj9P/////////74CAAAAAAAAAAP/////gAAAAAAf4sfgD/////////4AAAAAAAAAAAP/////wAAAAAAZ+d/wH//////////hgAAAAAAAAAP/////9gAAAAAA/7/xf//////////xAAAAAAAAAAP/////+AAAAAAB///7P//////////4AAAAAAAAAAf/////9HgAAAAH///////////////9AAAAAAAAAAv/////8iAAAAABf//////////////9gAAAAAAAAB///////4AAAAAHv//////////////9AAAAAAAAAD/////P/+AAAAAzz///////////////AEAAAAAAAP/////P/8AAAAAxA//////////////0AOAAAAwAAX////4H/wAAAAAGA8H////////////gAPAAAAFAA/////gH/wAAAAAWAmH////////////4AHgAAALAB////8AP5AAAAAAEDPH////////////+ABwAAF/4L////4AHwAAAAAAAD/gH/////////////g8AAD///////8AHgADwAAAAD/H//////////////5vwAB////////AAeAH4AAAAB/n/////////////////DCf///////3O+AP8AD4AAP5/f//////////////+/n////////6B9gf/gA4AAH//D///////////////8B//////f33E/Af/wAAAAD//8v//v///////////AB//+//Hv7DH8AP//gAAAB//gEB7j/////////+/AAPgAAAD8Of/4A//+AAAAACIAAIHv////////+AAAAAAAAd/Ywf+AA///4AAAAAAABgDtP////4D8AAAAAAAAAPwZnJYAB///2AAAAAAAAYAA///PxgDAAAAAAAAAAADwt/gAD///+AAAAAAAAOAAB//8AAPGAAA";
+  const ROWS = 91, COLS = 240, LAT0 = -60, LON0 = -180, STEP = 1.5;
+  (function(){
+    const bin = atob(LAND_B64);
+    const pts = [];
+    for(let r=0; r<ROWS; r++){
+      for(let cIdx=0; cIdx<COLS; cIdx++){
+        const i = r*COLS + cIdx;
+        if((bin.charCodeAt(i>>3) >> (7-(i&7))) & 1){
+          const v = latLon(LAT0 + r*STEP, LON0 + cIdx*STEP);
+          pts.push(v.x, v.y, v.z);
+        }
+      }
+    }
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.Float32BufferAttribute(pts, 3));
+    globe.add(new THREE.Points(geo, new THREE.PointsMaterial({
+      color:0x86C8E8, size:.032, transparent:true, opacity:.9, depthWrite:false
+    })));
+  })();
+
+  /* ---- graticule ring accents ---- */
+  [0, 30, -30].forEach(lat=>{
+    const r2 = R * Math.cos(lat*Math.PI/180), y = R * Math.sin(lat*Math.PI/180);
+    const seg = [];
+    for(let a=0; a<=128; a++){
+      const t = a/128*Math.PI*2;
+      seg.push(Math.cos(t)*r2, y, Math.sin(t)*r2);
+    }
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.Float32BufferAttribute(seg,3));
+    globe.add(new THREE.Line(g, new THREE.LineBasicMaterial({color:0x3B5C7A, transparent:true, opacity:.22})));
+  });
+
+  /* ---- cities ---- */
+  const CITIES = [
+    ["Kathmandu",27.7,85.3,true],["New York",40.7,-74.0],["San Francisco",37.8,-122.4],
+    ["London",51.5,-0.1],["Frankfurt",50.1,8.7],["Paris",48.9,2.4],["Amsterdam",52.4,4.9],
+    ["Moscow",55.8,37.6],["Beijing",39.9,116.4],["Shanghai",31.2,121.5],["Tokyo",35.7,139.7],
+    ["Seoul",37.6,127.0],["Singapore",1.35,103.8],["Hong Kong",22.3,114.2],["Mumbai",19.1,72.9],
+    ["Delhi",28.6,77.2],["Dubai",25.2,55.3],["Tel Aviv",32.1,34.8],["Sydney",-33.9,151.2],
+    ["Sao Paulo",-23.6,-46.6],["Mexico City",19.4,-99.1],["Toronto",43.7,-79.4],
+    ["Johannesburg",-26.2,28.0],["Lagos",6.5,3.4]
+  ];
+  CITIES.forEach(([name,lat,lon,home])=>{
+    const m = new THREE.Mesh(
+      new THREE.SphereGeometry(home? .05 : .034, 8, 8),
+      new THREE.MeshBasicMaterial({color: home? 0xFBBF24 : 0x67E8F9})
+    );
+    m.position.copy(latLon(lat,lon,R+.01));
+    globe.add(m);
+  });
+
+  /* ---- attack simulation ---- */
+  const TYPES = [
+    ["DDoS",        0x67E8F9, "LOW"],
+    ["BRUTE_FORCE", 0xFBBF24, "MED"],
+    ["SQL_INJECT",  0x818CF8, "MED"],
+    ["RANSOMWARE",  0xFB7185, "CRIT"],
+    ["PHISHING",    0x34D399, "LOW"],
+    ["PORT_SCAN",   0x86C8E8, "LOW"],
+    ["C2_BEACON",   0xF472B6, "HIGH"],
+    ["ZERO_DAY",    0xFB7185, "CRIT"]
+  ];
+  const SEV_COLOR = {LOW:"#34D399", MED:"#FBBF24", HIGH:"#F472B6", CRIT:"#FB7185"};
+  const arcs = [];
+  const logEl = document.getElementById('tl-entries');
+  const sevEl = document.getElementById('tl-sev');
+  const countEl = document.getElementById('atk-count');
+  let attackCount = 0;
+
+  const fakeIP = () => `${10+Math.floor(Math.random()*210)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${1+Math.floor(Math.random()*250)}`;
+
+  function spawnAttack(){
+    const si = Math.floor(Math.random()*CITIES.length);
+    let ti = Math.floor(Math.random()*CITIES.length);
+    if(ti === si) ti = (ti+1) % CITIES.length;
+    const [sn, slat, slon] = CITIES[si];
+    const [tn, tlat, tlon] = CITIES[ti];
+    const [tname, color, sev] = TYPES[Math.floor(Math.random()*TYPES.length)];
+
+    const a = latLon(slat, slon), b = latLon(tlat, tlon);
+    const dist = a.distanceTo(b);
+    const mid = a.clone().add(b).multiplyScalar(.5).normalize().multiplyScalar(R + .35 + dist*.28);
+    const curve = new THREE.QuadraticBezierCurve3(a, mid, b);
+    const pts = curve.getPoints(80);
+    const geo = new THREE.BufferGeometry().setFromPoints(pts);
+    geo.setDrawRange(0, 0);
+    const line = new THREE.Line(geo, new THREE.LineBasicMaterial({color, transparent:true, opacity:.85}));
+    globe.add(line);
+
+    // impact pulse ring at target
+    const ring = new THREE.Mesh(
+      new THREE.RingGeometry(.045, .065, 24),
+      new THREE.MeshBasicMaterial({color, transparent:true, opacity:0, side:THREE.DoubleSide})
+    );
+    ring.position.copy(latLon(tlat, tlon, R+.012));
+    ring.lookAt(ring.position.clone().multiplyScalar(2));
+    globe.add(ring);
+
+    arcs.push({line, ring, t:0});
+
+    // log entry
+    attackCount++;
+    countEl.textContent = attackCount;
+    sevEl.textContent = "SEV: " + sev;
+    sevEl.style.color = SEV_COLOR[sev];
+    const e = document.createElement('div');
+    e.className = 'tl-entry';
+    e.innerHTML = `<span class="sev" style="background:${SEV_COLOR[sev]}"></span>` +
+                  `<span class="typ">${tname}</span>` +
+                  `<span class="route">${fakeIP()} ${sn}→${tn}</span>`;
+    logEl.prepend(e);
+    while(logEl.children.length > 5) logEl.removeChild(logEl.lastChild);
+  }
+
+  function tickArcs(){
+    for(let i = arcs.length-1; i >= 0; i--){
+      const A = arcs[i];
+      A.t += .016;
+      if(A.t < 1){               // draw head
+        A.line.geometry.setDrawRange(0, Math.floor(A.t*81));
+      } else if(A.t < 1.6){      // impact pulse
+        const p = (A.t-1)/.6;
+        A.ring.material.opacity = .9*(1-p);
+        A.ring.scale.setScalar(1 + p*5);
+      } else if(A.t < 2.4){      // fade arc
+        A.line.material.opacity = .85 * (1-(A.t-1.6)/.8);
+      } else {
+        globe.remove(A.line); globe.remove(A.ring);
+        A.line.geometry.dispose(); A.line.material.dispose();
+        A.ring.geometry.dispose(); A.ring.material.dispose();
+        arcs.splice(i,1);
+      }
+    }
+  }
+
+  if(!reduced){
+    spawnAttack();
+    (function schedule(){
+      setTimeout(()=>{ spawnAttack(); schedule(); }, 700 + Math.random()*1300);
+    })();
+  }
+
+  /* ---- drag to rotate ---- */
+  let drag=false, px=0, py=0, vx=0, vy=.0014;
+  const startD=(x,y)=>{drag=true;px=x;py=y};
+  const moveD=(x,y)=>{ if(!drag) return; vy=(x-px)*.004; vx=(y-py)*.004; px=x; py=y; };
+  wrap.addEventListener('mousedown',e=>startD(e.clientX,e.clientY));
+  window.addEventListener('mousemove',e=>moveD(e.clientX,e.clientY));
+  window.addEventListener('mouseup',()=>drag=false);
+  wrap.addEventListener('touchstart',e=>startD(e.touches[0].clientX,e.touches[0].clientY),{passive:true});
+  wrap.addEventListener('touchmove',e=>moveD(e.touches[0].clientX,e.touches[0].clientY),{passive:true});
+  window.addEventListener('touchend',()=>drag=false);
+
+  (function loop(){
+    requestAnimationFrame(loop);
+    if(!reduced){
+      globe.rotation.y += drag ? vy : (vy = vy*.95 + .0014*.05);
+      globe.rotation.x += vx; vx *= .9;
+      globe.rotation.x = Math.max(-.9, Math.min(.9, globe.rotation.x));
+      tickArcs();
+    }
+    renderer.render(scene, camera);
+  })();
+})();
+
+/* ============ 3D tilt cards ============ */
+if(!reduced && matchMedia('(pointer:fine)').matches){
+  document.querySelectorAll('[data-tilt]').forEach(card=>{
+    card.addEventListener('mousemove', e=>{
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left)/r.width, y = (e.clientY - r.top)/r.height;
+      card.style.transform = `rotateY(${(x-.5)*10}deg) rotateX(${(.5-y)*10}deg) translateY(-3px)`;
+      card.style.setProperty('--mx', (x*100)+'%');
+      card.style.setProperty('--my', (y*100)+'%');
+    });
+    card.addEventListener('mouseleave', ()=> card.style.transform='');
+  });
+}
+
+/* ============ Parallax SVG layers ============ */
+if(!reduced){
+  const grid = document.getElementById('bg-grid');
+  const topo = document.getElementById('bg-topo');
+  window.addEventListener('scroll', ()=>{
+    const y = window.scrollY;
+    grid.style.transform = `translateY(${y*-.06}px)`;
+    topo.style.transform = `translateY(${y*-.14}px)`;
+  }, {passive:true});
+}
+
+/* ============ Scroll reveal ============ */
+const io = new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
